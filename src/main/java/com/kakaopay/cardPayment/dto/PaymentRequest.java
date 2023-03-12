@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class paymentRequest {
+public class PaymentRequest {
     private Long cardNo;
     private Long expiryDate;
     private Long cvc;

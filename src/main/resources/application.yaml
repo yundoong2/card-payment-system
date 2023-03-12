@@ -1,0 +1,6 @@
+
+card:
+  cipher:
+    algorithm: AES
+    secret-key: mysecretkey
+    separator: |

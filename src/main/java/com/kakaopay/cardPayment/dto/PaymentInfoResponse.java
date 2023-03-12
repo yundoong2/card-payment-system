@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class paymentInfoResponse {
+public class PaymentInfoResponse {
     private String id;
     private CardInfoResponse cardInfo;
     private PaymentType paymentType;

@@ -1,4 +1,4 @@
-package com.kakaopay.cardPayment.config;
+package com.kakaopay.cardPayment.config.exception;
 
 import com.kakaopay.cardPayment.common.constant.ErrorCode;
 import lombok.Getter;
