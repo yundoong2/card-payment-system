@@ -12,8 +12,9 @@ public enum ErrorCode {
 
     PAYMENT_NOT_FOUND("E04", "결제 정보가 존재하지 않습니다"),
 
-    INVALID_FORMAT_TYPE("E05", "유효하지 않은 포맷 형식입니다.");
-
+    INVALID_FORMAT_TYPE("E05", "유효하지 않은 포맷 형식입니다."),
+    FAILED_GENERATE_PAYLOAD_DATA("E06", "Payload 데이터를 생성하는데 실패하였습니다. "),
+    FAILED_SAVE_PAYLOAD_DATA("E07", "Payload 데이터를 저장하는데 실패하였습니다.");
 
     @Getter
     private final String code;

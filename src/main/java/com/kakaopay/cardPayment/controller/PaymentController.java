@@ -3,9 +3,9 @@ package com.kakaopay.cardPayment.controller;
 
 import com.kakaopay.cardPayment.config.exception.CustomException;
 import com.kakaopay.cardPayment.dto.BaseResponse;
-import com.kakaopay.cardPayment.dto.CancelRequest;
-import com.kakaopay.cardPayment.dto.FindRequest;
-import com.kakaopay.cardPayment.dto.PaymentRequest;
+import com.kakaopay.cardPayment.dto.payment.CancelRequest;
+import com.kakaopay.cardPayment.dto.payment.FindRequest;
+import com.kakaopay.cardPayment.dto.payment.PaymentRequest;
 import com.kakaopay.cardPayment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

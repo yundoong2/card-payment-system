@@ -1,4 +1,4 @@
-package com.kakaopay.cardPayment.dto;
+package com.kakaopay.cardPayment.dto.payment;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class PaymentResponse {
     private String id;
-    private String cardInfo;
+    private String cardData;
 }
