@@ -4,6 +4,7 @@ import com.kakaopay.cardPayment.common.constant.ErrorCode;
 import com.kakaopay.cardPayment.common.constant.PaymentType;
 import com.kakaopay.cardPayment.common.util.CryptoUtil;
 import com.kakaopay.cardPayment.common.util.DataHandlerUtil;
+import com.kakaopay.cardPayment.common.util.LockUtil;
 import com.kakaopay.cardPayment.common.util.ParsingUtil;
 import com.kakaopay.cardPayment.config.exception.CustomException;
 import com.kakaopay.cardPayment.dto.*;
@@ -23,12 +24,18 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final CryptoUtil cryptoUtils;
     private final PayloadService payloadService;
+    private final LockUtil lockUtil;
 
     @Transactional
     public BaseResponse doPayment(PaymentRequest request) throws CustomException {
         try {
             //카드정보 암호화
             String encryptedCardInfo = cryptoUtils.doEncrypt(request);
+
+            //동일 결제에 대한 분산락 처리
+            if(!lockUtil.lock(encryptedCardInfo).tryLock()) {
+                throw new CustomException(ErrorCode.LOCK_PAYMENT);
+            }
 
             //결제 정보 저장
             Payment payment = ParsingUtil.toPayment(request, encryptedCardInfo);
@@ -51,7 +58,7 @@ public class PaymentService {
         } catch (Exception e) {
             throw new CustomException(ErrorCode.UNEXPECTED_ERROR, e.getLocalizedMessage());
         } finally {
-
+            lockUtil.unlock();
         }
     }
 
@@ -61,6 +68,10 @@ public class PaymentService {
             //결제 정보 조회
             Payment payment = paymentRepository.findById(cancelRequest.getId())
                     .orElseThrow(() -> new CustomException(ErrorCode.PAYMENT_NOT_FOUND));
+
+            if(!lockUtil.lock(cancelRequest.getId()).tryLock()) {
+                throw new CustomException(ErrorCode.LOCK_CANCEL);
+            }
 
             //취소 VAT 계산
             Long cancelVat = DataHandlerUtil.getCancelVat(payment, cancelRequest);
@@ -80,6 +91,7 @@ public class PaymentService {
 
             //카드 정보(카드번호, CVC, 유효기간)
             CardInfoResponse cardInfoResponse = cryptoUtils.doDecrypt(payment.getCardInfo());
+            cardInfoResponse.setCardNo(DataHandlerUtil.getMaskCardNum(cardInfoResponse.getCardNo()));
             //카드사 전송 데이터
             String cardData = DataHandlerUtil.generatePayloadData(payment, cardInfoResponse);
             //카드사 데이터 저장
@@ -95,7 +107,7 @@ public class PaymentService {
         } catch (Exception e) {
             throw new CustomException(ErrorCode.UNEXPECTED_ERROR, e.getLocalizedMessage());
         } finally {
-
+            lockUtil.unlock();
         }
     }
 

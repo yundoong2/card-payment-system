@@ -54,6 +54,17 @@ public class DataHandlerUtil {
         }
     }
 
+    public static String getMaskCardNum(String cardNum) {
+        int start = 6;
+        int end = 3;
+
+        return new StringBuilder()
+                .append(StringUtils.substring(cardNum, 0, 6))
+                .append(StringUtils.repeat(Constants.MASKING_CHAR, cardNum.length() - (start + end)))
+                .append(StringUtils.substring(cardNum, cardNum.length() - end))
+                .toString();
+    }
+
     public static String onFormat(Object value, FieldInfo fieldInfo) {
         switch (fieldInfo.getType()) {
             case "NUMBER":

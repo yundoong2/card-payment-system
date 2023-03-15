@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CardInfoResponse {
-    private Long cardNo;
+    private String cardNo;
     private Long expiryDate;
     private Long cvc;
 }

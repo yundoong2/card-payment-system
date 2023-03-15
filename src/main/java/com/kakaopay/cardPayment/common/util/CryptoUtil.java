@@ -73,7 +73,7 @@ public class CryptoUtil {
                     .of(StringUtils.split(decryptedString, CIPHER_SEPARATOR))
                     .map(args -> {
                         CardInfoResponse info = new CardInfoResponse();
-                        info.setCardNo(Long.valueOf(args[0]));
+                        info.setCardNo(args[0]);
                         info.setExpiryDate(Long.valueOf(args[1]));
                         info.setCvc(Long.valueOf(args[2]));
                         return info;

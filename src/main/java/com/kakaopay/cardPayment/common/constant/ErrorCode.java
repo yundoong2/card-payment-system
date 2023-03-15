@@ -14,7 +14,10 @@ public enum ErrorCode {
 
     INVALID_FORMAT_TYPE("E05", "유효하지 않은 포맷 형식입니다."),
     FAILED_GENERATE_PAYLOAD_DATA("E06", "Payload 데이터를 생성하는데 실패하였습니다. "),
-    FAILED_SAVE_PAYLOAD_DATA("E07", "Payload 데이터를 저장하는데 실패하였습니다.");
+    FAILED_SAVE_PAYLOAD_DATA("E07", "Payload 데이터를 저장하는데 실패하였습니다."),
+
+    LOCK_PAYMENT("E08", "이미 결제가 진행 중인 카드 정보입니다."),
+    LOCK_CANCEL("E08", "이미 결제 취소가 진행 중인 카드 정보입니다.");
 
     @Getter
     private final String code;
