@@ -13,7 +13,6 @@ public class CommonInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HandlerMethod hm = (HandlerMethod) handler;
 
-
         return true;
     }
 }

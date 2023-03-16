@@ -1,5 +1,6 @@
 package com.kakaopay.cardPayment.service;
 
+import com.kakaopay.cardPayment.common.ValidationAspect;
 import com.kakaopay.cardPayment.common.constant.ErrorCode;
 import com.kakaopay.cardPayment.common.constant.PaymentType;
 import com.kakaopay.cardPayment.common.util.CryptoUtil;
@@ -7,11 +8,9 @@ import com.kakaopay.cardPayment.common.util.DataHandlerUtil;
 import com.kakaopay.cardPayment.common.util.LockUtil;
 import com.kakaopay.cardPayment.common.util.ParsingUtil;
 import com.kakaopay.cardPayment.config.exception.CustomException;
-import com.kakaopay.cardPayment.dto.*;
-import com.kakaopay.cardPayment.dto.payload.PayloadRequest;
+import com.kakaopay.cardPayment.dto.BaseResponse;
 import com.kakaopay.cardPayment.dto.payment.*;
 import com.kakaopay.cardPayment.entity.Payment;
-import com.kakaopay.cardPayment.repository.PayloadRepository;
 import com.kakaopay.cardPayment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class PaymentService {
             //카드정보 암호화
             String encryptedCardInfo = cryptoUtils.doEncrypt(request);
 
-            //동일 결제에 대한 분산락 처리
+            //중복 결제에 대한 분산락 처리
             if(!lockUtil.lock(encryptedCardInfo).tryLock()) {
                 throw new CustomException(ErrorCode.LOCK_PAYMENT);
             }
@@ -69,8 +68,14 @@ public class PaymentService {
             Payment payment = paymentRepository.findById(cancelRequest.getId())
                     .orElseThrow(() -> new CustomException(ErrorCode.PAYMENT_NOT_FOUND));
 
+            //중복 결제에 대한 분산락 처리
             if(!lockUtil.lock(cancelRequest.getId()).tryLock()) {
                 throw new CustomException(ErrorCode.LOCK_CANCEL);
+            }
+
+            //남은 결제금액 및 취소 금액 체크
+            if(payment.getPrice() < cancelRequest.getCancelPrice()) {
+                throw new CustomException(ErrorCode.INVALID_CANCEL_PRICE);
             }
 
             //취소 VAT 계산
