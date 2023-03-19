@@ -51,7 +51,6 @@ public class ParsingUtil {
 
     public static Payload toPayload(Payment payment, String cardData) {
         Payload payload = Payload.builder()
-                .payment(payment)
                 .data(cardData)
                 .build();
 

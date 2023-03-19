@@ -17,6 +17,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
 
+/**
+ * ValidationAspect 클래스
+ * - Service Layer의 유효성 검증을 위한 Aspect
+ * @author cyh68
+ * @since 2023-03-18
+ */
 @Slf4j
 @Component
 @Aspect
@@ -25,8 +31,14 @@ public class ValidationAspect {
 
     private final ObjectMapper objectMapper;
 
+    /**
+     * validatePayment
+     * - doPayment 서비스 검증
+     * @throws CustomException
+     * @param joinPoint {@link JoinPoint}
+     */
     @Before(value = "execution(* com.kakaopay.cardPayment.service.PaymentService*.doPayment(..))")
-    public void validatePayment(JoinPoint joinPoint) {
+    public void validatePayment(JoinPoint joinPoint) throws CustomException {
         PaymentRequest param = objectMapper.convertValue(joinPoint.getArgs()[0], new TypeReference<PaymentRequest>() {
         });
 
@@ -38,11 +50,10 @@ public class ValidationAspect {
 
         //값 형식 체크
         if (!Pattern.matches(Constants.CARD_NUM_REGEX, param.getCardNo().toString())
-                || !Pattern.matches(Constants.EXPIRY_REGEX, param.getExpiryDate().toString())
+                || !Constants.isValidExpiryDate(param.getExpiryDate())
                 || !Pattern.matches(Constants.CVC_REGEX, param.getCvc().toString())
                 || !Pattern.matches(Constants.INSTALL_REGEX, param.getInstallMonth().toString())
-                || !Pattern.matches(Constants.PRICE_REGEX, param.getPrice().toString())
-                || param.getPrice() > 1000000000) {
+                || !Constants.isValidPrice(param.getPrice())) {
 
             throw new CustomException(ErrorCode.INVALID_FORMAT_TYPE);
         }
@@ -55,6 +66,12 @@ public class ValidationAspect {
         }
     }
 
+    /**
+     * validateCancel
+     * - doCancel 서비스 검증
+     * @throws CustomException
+     * @param joinPoint {@link JoinPoint}
+     */
     @Before(value = "execution(* com.kakaopay.cardPayment.service.PaymentService*.doCancel(..))")
     public void validateCancel(JoinPoint joinPoint) {
         CancelRequest param = objectMapper.convertValue(joinPoint.getArgs()[0], new TypeReference<CancelRequest>() {
@@ -78,6 +95,12 @@ public class ValidationAspect {
         }
     }
 
+    /**
+     * validateFind
+     * - doFind 서비스 검증
+     * @throws CustomException
+     * @param joinPoint {@link JoinPoint}
+     */
     @Before(value = "execution(* com.kakaopay.cardPayment.service.PaymentService*.doFind(..))")
     public void validateFind(JoinPoint joinPoint) {
         FindRequest param = objectMapper.convertValue(joinPoint.getArgs()[0], new TypeReference<FindRequest>() {

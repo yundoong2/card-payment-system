@@ -4,6 +4,12 @@ import com.kakaopay.cardPayment.common.constant.PaymentType;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * PaymentInfoResponse
+ * - 결제 정보 Response DTO
+ * @author cyh68
+ * @since 2023-03-18
+ */
 @Getter
 @Setter
 public class PaymentInfoResponse {

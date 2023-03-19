@@ -3,6 +3,9 @@ package com.kakaopay.cardPayment.common.constant;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+/**
+ * 에러 코드 정의
+ */
 public enum ErrorCode {
     UNEXPECTED_ERROR("E00", "Unexpected Error"),
 

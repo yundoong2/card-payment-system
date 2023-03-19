@@ -1,5 +1,6 @@
 package com.kakaopay.cardPayment.common.util;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.integration.support.locks.LockRegistry;
@@ -9,6 +10,7 @@ import java.util.concurrent.locks.Lock;
 
 
 @Component
+@RequiredArgsConstructor
 public class LockUtil {
     private LockRegistry lockRegistry;
     private String registryKey;

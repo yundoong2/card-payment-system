@@ -2,6 +2,9 @@ package com.kakaopay.cardPayment.common.constant;
 
 import lombok.Getter;
 
+/**
+ * 결제 정보 필드 형식 및 길이 정의
+ */
 public enum FieldInfo {
     DATA_LENGTH("NUMBER", 4),
     DATA_TYPE("STRING", 10),

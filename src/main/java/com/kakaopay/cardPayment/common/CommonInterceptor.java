@@ -7,6 +7,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Controller의 유효성 검증을 위한 Interceptor
+ */
 @Slf4j
 public class CommonInterceptor implements HandlerInterceptor {
     @Override
