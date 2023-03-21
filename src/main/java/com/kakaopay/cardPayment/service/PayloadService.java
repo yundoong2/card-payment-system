@@ -24,7 +24,7 @@ import javax.transaction.Transactional;
 @Service
 @RequiredArgsConstructor
 public class PayloadService {
-    private PayloadRepository payloadRepository;
+    private final PayloadRepository payloadRepository;
 
     /**
      * 결제 데이터 카드사 전송 서비스
@@ -40,7 +40,7 @@ public class PayloadService {
             Payload payload = ParsingUtil.toPayload(payment, cardData);
             payloadRepository.save(payload);
         } catch (Exception e) {
-            throw new CustomException(ErrorCode.FAILED_SAVE_PAYLOAD_DATA);
+            throw new CustomException(ErrorCode.FAILED_SAVE_PAYLOAD_DATA, e.getLocalizedMessage());
         }
     }
 

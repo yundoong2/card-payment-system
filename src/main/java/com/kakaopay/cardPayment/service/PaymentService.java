@@ -29,9 +29,7 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final CryptoUtil cryptoUtils;
     private final PayloadService payloadService;
-    @Autowired
-    private LockUtil lockUtil;
-//    private ThreadLocal<String> threadLocal;
+    private final LockUtil lockUtil;
 
     /**
      * 결제 서비스
@@ -44,24 +42,15 @@ public class PaymentService {
      */
     @Transactional
     public PaymentResponse doPayment(PaymentRequest request) throws CustomException {
+        //카드정보 암호화
+        String encryptedCardInfo = cryptoUtils.doEncrypt(request);
+
+        //중복 결제에 대한 분산락 처리
+        if (!lockUtil.lock(encryptedCardInfo).tryLock()) {
+            throw new CustomException(ErrorCode.LOCK_PAYMENT);
+        }
+
         try {
-            //카드정보 암호화
-            String encryptedCardInfo = cryptoUtils.doEncrypt(request);
-
-            //중복 결제에 대한 분산락 처리
-            if(!lockUtil.lock(encryptedCardInfo).tryLock()) {
-                throw new CustomException(ErrorCode.LOCK_PAYMENT);
-            }
-
-            //ThreadLocal 을 사용한 동시성 제어
-            /*
-            String threadId = threadLocal.get();
-            if (threadId == null) {
-                threadLocal.set(encryptedCardInfo);
-            } else if (threadId.equals(encryptedCardInfo)) {
-                throw new CustomException(ErrorCode.LOCK_PAYMENT);
-            }
-            */
 
             //결제 정보 저장
             Payment payment = ParsingUtil.toPayment(request, encryptedCardInfo);
@@ -85,7 +74,6 @@ public class PaymentService {
             throw new CustomException(ErrorCode.UNEXPECTED_ERROR, e.getLocalizedMessage());
         } finally {
             lockUtil.unlock();
-//            threadLocal.remove();
         }
     }
 
@@ -100,28 +88,34 @@ public class PaymentService {
      */
     @Transactional
     public PaymentResponse doCancel(CancelRequest cancelRequest) throws CustomException {
+
+        //결제 정보 조회
+        Payment payment = paymentRepository.findById(cancelRequest.getId())
+                .orElseThrow(() -> new CustomException(ErrorCode.PAYMENT_NOT_FOUND));
+
+        //남은 결제금액 및 취소 금액 체크
+        if (payment.getPrice() < cancelRequest.getCancelPrice()) {
+            throw new CustomException(ErrorCode.INVALID_CANCEL_PRICE);
+        }
+
+        Long remainPrice = payment.getPrice() - cancelRequest.getCancelPrice();
+        //취소 VAT 계산
+        Long cancelVat = DataHandlerUtil.getCancelVat(cancelRequest, remainPrice, payment.getVat());
+
+        //취소 부가가치세가 남은 결제 부가가치세 보다 큰 경우 에러 처리
+        if(payment.getVat() < cancelVat) {
+            throw new CustomException(ErrorCode.INVALID_VAT_CANCEL);
+        }
+
+        //기존 결제 정보에서 취소 금액 및 취소 Vat을 계산하여 남은 값 저장
+        Long remainVat = payment.getVat() - cancelVat;
+
+        //중복 결제에 대한 분산락 처리
+        if (!lockUtil.lock(cancelRequest.getId()).tryLock()) {
+            throw new CustomException(ErrorCode.LOCK_CANCEL);
+        }
+
         try {
-            //결제 정보 조회
-            Payment payment = paymentRepository.findById(cancelRequest.getId())
-                    .orElseThrow(() -> new CustomException(ErrorCode.PAYMENT_NOT_FOUND));
-
-            //중복 결제에 대한 분산락 처리
-            if (!lockUtil.lock(cancelRequest.getId()).tryLock()) {
-                throw new CustomException(ErrorCode.LOCK_CANCEL);
-            }
-
-            //남은 결제금액 및 취소 금액 체크
-            if (payment.getPrice() < cancelRequest.getCancelPrice()) {
-                throw new CustomException(ErrorCode.INVALID_CANCEL_PRICE);
-            }
-
-            //취소 VAT 계산
-            Long cancelVat = DataHandlerUtil.getCancelVat(payment, cancelRequest);
-
-            //기존 결제 정보에서 취소 금액 및 취소 Vat을 계산하여 남은 값 저장
-            Long remainPrice = payment.getPrice() - cancelRequest.getCancelPrice();
-            Long remainVat = payment.getVat() - cancelVat;
-
             //변경된 Price, Vat 값을 업데이트
             Payment updatePayment = ParsingUtil.toUpdatePayment(payment, remainPrice, remainVat);
             paymentRepository.save(updatePayment);

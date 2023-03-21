@@ -18,8 +18,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "PAYLOAD_TB")
-public class Payload implements Serializable {
+public class Payload {
     @Id
-    @Column(name = "DATA")
+    @Column(name = "DATA", length = 500)
     private String data;
 }

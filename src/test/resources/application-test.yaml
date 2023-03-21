@@ -3,7 +3,7 @@ card:
   cipher:
     algorithm: DESede
     secret-key: kakaopaykakaopaykakaopay
-    separator: |
+    separator: _
 # Test Profile
 spring:
   config:
@@ -18,5 +18,8 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-#      ddl-auto: update
+#      ddl-auto: create
       hibernate.hbm2ddl.auto: update
+  redis:
+    port: 6379
+    host: localhost

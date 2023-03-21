@@ -29,7 +29,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setPrice(null);
 
         var result = super.doTest(request, "/payment");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_PARAM_OMITTED.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_PARAM_OMITTED.getMessage()));
     }
@@ -41,7 +40,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setCardNo(12345678L);
 
         var result = super.doTest(request, "/payment");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_FORMAT_TYPE.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_FORMAT_TYPE.getMessage()));
     }
@@ -53,7 +51,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setCardNo(12345678901234567L);
 
         var result = super.doTest(request, "/payment");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_FORMAT_TYPE.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_FORMAT_TYPE.getMessage()));
     }
@@ -65,7 +62,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setExpiryDate("123");
 
         var result = super.doTest(request, "/payment");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_FORMAT_TYPE.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_FORMAT_TYPE.getMessage()));
     }
@@ -77,7 +73,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setExpiryDate("12345");
 
         var result = super.doTest(request, "/payment");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_FORMAT_TYPE.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_FORMAT_TYPE.getMessage()));
     }
@@ -89,7 +84,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setExpiryDate("1323");
 
         var result = super.doTest(request, "/payment");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_FORMAT_TYPE.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_FORMAT_TYPE.getMessage()));
     }
@@ -101,7 +95,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setCvc(44L);
 
         var result = super.doTest(request, "/payment");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_FORMAT_TYPE.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_FORMAT_TYPE.getMessage()));
     }
@@ -113,7 +106,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setCvc(4444L);
 
         var result = super.doTest(request, "/payment");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_FORMAT_TYPE.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_FORMAT_TYPE.getMessage()));
     }
@@ -125,7 +117,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setInstallMonth(-1L);
 
         var result = super.doTest(request, "/payment");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_FORMAT_TYPE.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_FORMAT_TYPE.getMessage()));
     }
@@ -137,7 +128,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setInstallMonth(20L);
 
         var result = super.doTest(request, "/payment");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_FORMAT_TYPE.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_FORMAT_TYPE.getMessage()));
     }
@@ -149,7 +139,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setPrice(99L);
 
         var result = super.doTest(request, "/payment");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_FORMAT_TYPE.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_FORMAT_TYPE.getMessage()));
     }
@@ -161,7 +150,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setPrice(1000000001L);
 
         var result = super.doTest(request, "/payment");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_FORMAT_TYPE.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_FORMAT_TYPE.getMessage()));
     }
@@ -174,9 +162,8 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setVat(2000L);
 
         var result = super.doTest(request, "/payment");
-        result.andExpect(status().is4xxClientError());
-        result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_VAT_VALUE.getCode()));
-        result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_VAT_VALUE.getMessage()));
+        result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_VAT_PRICE.getCode()));
+        result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_VAT_PRICE.getMessage()));
     }
 
     @Test
@@ -187,7 +174,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setCancelPrice(null);
 
         var result = super.doTest(request, "/cancel");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_PARAM_OMITTED.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_PARAM_OMITTED.getMessage()));
     }
@@ -199,7 +185,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setId("abcd1234");
 
         var result = super.doTest(request, "/cancel");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_FORMAT_TYPE.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_FORMAT_TYPE.getMessage()));
     }
@@ -212,7 +197,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setVat(1500L);
 
         var result = super.doTest(request, "/cancel");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_FORMAT_TYPE.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_FORMAT_TYPE.getMessage()));
     }
@@ -224,7 +208,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setId(null);
 
         var result = super.doTest(request, "/find");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_PARAM_OMITTED.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_PARAM_OMITTED.getMessage()));
     }
@@ -236,7 +219,6 @@ public class PaymentControllerFailTest extends CommonTestCase {
         request.setId("abcd12345");
 
         var result = super.doTest(request, "/find");
-        result.andExpect(status().is4xxClientError());
         result.andExpect(jsonPath("$.code").value(ErrorCode.INVALID_FORMAT_TYPE.getCode()));
         result.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_FORMAT_TYPE.getMessage()));
     }

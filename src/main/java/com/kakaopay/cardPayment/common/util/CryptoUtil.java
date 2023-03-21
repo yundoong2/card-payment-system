@@ -30,7 +30,7 @@ public class CryptoUtil {
     private Cipher cipher;
 
     @PostConstruct
-    public void initCrypto() throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public void initCrypto() {
         try {
             cipher = Cipher.getInstance(CIPHER_ALGORITHM);
             secretKey = SecretKeyFactory
@@ -41,7 +41,7 @@ public class CryptoUtil {
         }
     }
 
-    public String doEncrypt(PaymentRequest request) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public String doEncrypt(PaymentRequest request) {
         try {
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 

@@ -1,13 +1,10 @@
-package com.kakaopay.cardPayment.payment;
+package com.kakaopay.cardPayment;
 
-import com.kakaopay.cardPayment.Application;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootApplication
-class ApplicationTests {
+public class ApplicationTests {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

@@ -39,6 +39,7 @@ public class ValidationAspect {
      */
     @Before(value = "execution(* com.kakaopay.cardPayment.service.PaymentService*.doPayment(..))")
     public void validatePayment(JoinPoint joinPoint) throws CustomException {
+        log.info("enter validatePayment");
         PaymentRequest param = objectMapper.convertValue(joinPoint.getArgs()[0], new TypeReference<PaymentRequest>() {
         });
 
@@ -61,7 +62,7 @@ public class ValidationAspect {
         //부가가치세 & 결제 금액 체크
         if (param.getVat() != null) {
             if (param.getVat() > param.getPrice()) {
-                throw new CustomException(ErrorCode.INVALID_VAT_VALUE);
+                throw new CustomException(ErrorCode.INVALID_VAT_PRICE);
             }
         }
     }
@@ -74,6 +75,7 @@ public class ValidationAspect {
      */
     @Before(value = "execution(* com.kakaopay.cardPayment.service.PaymentService*.doCancel(..))")
     public void validateCancel(JoinPoint joinPoint) {
+        log.info("enter validateCancel");
         CancelRequest param = objectMapper.convertValue(joinPoint.getArgs()[0], new TypeReference<CancelRequest>() {
         });
 
@@ -90,7 +92,7 @@ public class ValidationAspect {
         //부가가치세 & 결제 금액 체크
         if (param.getVat() != null) {
             if (param.getVat() > param.getCancelPrice()) {
-                throw new CustomException(ErrorCode.INVALID_VAT_VALUE);
+                throw new CustomException(ErrorCode.INVALID_VAT_PRICE);
             }
         }
     }
@@ -103,6 +105,7 @@ public class ValidationAspect {
      */
     @Before(value = "execution(* com.kakaopay.cardPayment.service.PaymentService*.doFind(..))")
     public void validateFind(JoinPoint joinPoint) {
+        log.info("enter validateFind");
         FindRequest param = objectMapper.convertValue(joinPoint.getArgs()[0], new TypeReference<FindRequest>() {
         });
 

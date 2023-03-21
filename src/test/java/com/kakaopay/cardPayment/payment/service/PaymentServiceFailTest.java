@@ -1,5 +1,6 @@
 package com.kakaopay.cardPayment.payment.service;
 
+import com.kakaopay.cardPayment.common.constant.ErrorCode;
 import com.kakaopay.cardPayment.config.exception.CustomException;
 import com.kakaopay.cardPayment.dto.payment.CancelRequest;
 import com.kakaopay.cardPayment.dto.payment.FindRequest;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PaymentServiceFailTest extends CommonTestCase {
@@ -31,6 +33,8 @@ public class PaymentServiceFailTest extends CommonTestCase {
 
         //Then
         CustomException e = (CustomException) exception;
+        assertEquals(ErrorCode.INVALID_PARAM_OMITTED.getCode(), e.getErrorCode().getCode());
+        assertEquals(ErrorCode.INVALID_PARAM_OMITTED.getMessage(), e.getErrorCode().getMessage());
     }
 
     @Test
@@ -47,6 +51,8 @@ public class PaymentServiceFailTest extends CommonTestCase {
 
         //Then
         CustomException e = (CustomException) exception;
+        assertEquals(ErrorCode.INVALID_PARAM_OMITTED.getCode(), e.getErrorCode().getCode());
+        assertEquals(ErrorCode.INVALID_PARAM_OMITTED.getMessage(), e.getErrorCode().getMessage());
     }
 
     @Test
@@ -63,5 +69,7 @@ public class PaymentServiceFailTest extends CommonTestCase {
 
         //Then
         CustomException e = (CustomException) exception;
+        assertEquals(ErrorCode.INVALID_PARAM_OMITTED.getCode(), e.getErrorCode().getCode());
+        assertEquals(ErrorCode.INVALID_PARAM_OMITTED.getMessage(), e.getErrorCode().getMessage());
     }
 }

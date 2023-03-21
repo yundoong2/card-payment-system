@@ -2,6 +2,7 @@ package com.kakaopay.cardPayment.payment;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kakaopay.cardPayment.ApplicationTests;
 import com.kakaopay.cardPayment.dto.payment.CancelRequest;
 import com.kakaopay.cardPayment.dto.payment.FindRequest;
 import com.kakaopay.cardPayment.dto.payment.PaymentRequest;
@@ -47,7 +48,7 @@ public class CommonTestCase {
     public PaymentRequest getTestPayRequest() {
         PaymentRequest request = new PaymentRequest();
         request.setCardNo(1234567890L);
-        request.setExpiryDate("0225");
+        request.setExpiryDate("1225");
         request.setCvc(333L);
         request.setInstallMonth(0L);
         request.setPrice(11000L);

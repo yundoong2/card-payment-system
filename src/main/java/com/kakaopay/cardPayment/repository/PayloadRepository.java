@@ -10,6 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author cyh68
  * @since 2023-03-18
  */
-public interface PayloadRepository extends JpaRepository<Payload, Payment> {
+public interface PayloadRepository extends JpaRepository<Payload, String> {
 
 }

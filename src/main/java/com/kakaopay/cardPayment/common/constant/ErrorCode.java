@@ -10,8 +10,8 @@ public enum ErrorCode {
     UNEXPECTED_ERROR("E00", "Unexpected Error"),
 
     INVALID_PARAM_OMITTED("E01", "누락된 입력 값이 존재합니다."),
-    INVALID_PARAM_FORMAT("E02", "형식에 맞지 않는 입력 값이 존재합니다."),
-    INVALID_VAT_VALUE("E03", "부가가치세는 결제 금액보다 클 수 없습니다."),
+    INVALID_VAT_CANCEL("E02", "취소 부가가치세는 남은 부가가치세보다 클 수 없습니다."),
+    INVALID_VAT_PRICE("E03", "부가가치세는 결제 금액보다 클 수 없습니다."),
     INVALID_CANCEL_PRICE("E04", "취소 금액은 남은 결제 금액 보다 클 수 없습니다"),
     PAYMENT_NOT_FOUND("E05", "결제 정보가 존재하지 않습니다"),
 

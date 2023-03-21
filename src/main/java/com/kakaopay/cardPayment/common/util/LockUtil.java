@@ -8,9 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.locks.Lock;
 
-
-@Component
-@RequiredArgsConstructor
 public class LockUtil {
     private LockRegistry lockRegistry;
     private String registryKey;

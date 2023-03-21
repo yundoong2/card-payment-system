@@ -16,6 +16,6 @@ public class Constants {
     }
 
     public static boolean isValidExpiryDate(String expiryDate) {
-        return Pattern.matches(Constants.EXPIRY_MONTH_REGEX, expiryDate.substring(0, 2));
+        return expiryDate.length() == 4 && Pattern.matches(Constants.EXPIRY_MONTH_REGEX, expiryDate.substring(0, 2));
     }
 }

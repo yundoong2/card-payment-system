@@ -45,12 +45,11 @@ public class DataHandlerUtil {
         }
     }
 
-    public static Long getCancelVat(Payment payment, CancelRequest request) {
-        Long remainPrice = payment.getPrice() - request.getCancelPrice();
-        if(request.getVat() != null) {
-            return request.getVat();
+    public static Long getCancelVat(CancelRequest cancelRequest, Long remainPrice, Long remainVat) {
+        if(cancelRequest.getVat() == null && remainPrice == 0) {
+            return remainVat;
         } else {
-            return getVat(request.getVat(), remainPrice);
+            return getVat(cancelRequest.getVat(), cancelRequest.getCancelPrice());
         }
     }
 

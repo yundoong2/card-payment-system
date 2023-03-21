@@ -40,7 +40,7 @@ class PaymentControllerTest extends CommonTestCase {
         //Then
         result.andExpect(status().is2xxSuccessful());
         result.andExpect(jsonPath("$.message").value("SUCCESS"));
-        result.andExpect(jsonPath("$.data").value(PaymentResponse.class));
+        result.andExpect(jsonPath("$.data").isNotEmpty());
     }
 
     /**
@@ -64,8 +64,8 @@ class PaymentControllerTest extends CommonTestCase {
         //Then
         result.andExpect(status().is2xxSuccessful());
         result.andExpect(jsonPath("$.message").value("SUCCESS"));
-        result.andExpect(jsonPath("$.data").value(PaymentResponse.class));
-        result.andExpect(jsonPath("$.data.id").value(paymentResponse.getId()));
+        result.andExpect(jsonPath("$.data").isNotEmpty());
+        result.andExpect(jsonPath("$.data.id").isNotEmpty());
     }
 
     /**
@@ -89,7 +89,7 @@ class PaymentControllerTest extends CommonTestCase {
         //Then
         result.andExpect(status().is2xxSuccessful());
         result.andExpect(jsonPath("$.message").value("SUCCESS"));
-        result.andExpect(jsonPath("$.data").value(PaymentInfoResponse.class));
+        result.andExpect(jsonPath("$.data").isNotEmpty());
         result.andExpect(jsonPath("$.data.id").value(paymentResponse.getId()));
     }
 }

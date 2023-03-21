@@ -3,7 +3,7 @@ card:
   cipher:
     algorithm: DESede
     secret-key: kakaopaykakaopaykakaopay
-    separator: |
+    separator: _
 spring:
   # H2 DB Info
   datasource:
@@ -14,7 +14,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-#      ddl-auto: update
+#      ddl-auto: create
       hibernate.hbm2ddl.auto: update
   redis:
     port: 6379
