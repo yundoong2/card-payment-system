@@ -40,7 +40,7 @@ public class ValidationAspect {
      * @since 2023-03-18
      * @throws PaymentException
      */
-    @Before(value = "execution(* com.kakaopay.cardPayment.service.PaymentService*.doPayment(..))")
+    @Before(value = "execution(* com.yoonhyeok.cardPayment.service.PaymentService*.doPayment(..))")
     public void validatePayment(JoinPoint joinPoint) throws PaymentException {
         log.info("enter validatePayment");
         PaymentRequest param = objectMapper.convertValue(joinPoint.getArgs()[0], new TypeReference<PaymentRequest>() {
@@ -79,7 +79,7 @@ public class ValidationAspect {
      * @since 2023-03-18
      * @throws PaymentException
      */
-    @Before(value = "execution(* com.kakaopay.cardPayment.service.PaymentService*.doCancel(..))")
+    @Before(value = "execution(* com.yoonhyeok.cardPayment.service.PaymentService*.doCancel(..))")
     public void validateCancel(JoinPoint joinPoint) {
         log.info("enter validateCancel");
         CancelRequest param = objectMapper.convertValue(joinPoint.getArgs()[0], new TypeReference<CancelRequest>() {
@@ -112,7 +112,7 @@ public class ValidationAspect {
      * @since 2023-03-18
      * @throws PaymentException
      */
-    @Before(value = "execution(* com.kakaopay.cardPayment.service.PaymentService*.doFind(..))")
+    @Before(value = "execution(* com.yoonhyeok.cardPayment.service.PaymentService*.doFind(..))")
     public void validateFind(JoinPoint joinPoint) {
         log.info("enter validateFind");
         FindRequest param = objectMapper.convertValue(joinPoint.getArgs()[0], new TypeReference<FindRequest>() {

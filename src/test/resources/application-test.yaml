@@ -2,7 +2,7 @@
 card:
   cipher:
     algorithm: DESede
-    secret-key: kakaopaykakaopaykakaopay
+    secret-key: secretsecretsecretsecret
     separator: _
 # Test Profile
 spring:
